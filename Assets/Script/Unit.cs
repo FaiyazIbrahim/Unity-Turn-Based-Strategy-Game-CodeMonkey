@@ -5,16 +5,14 @@ namespace Script
 {
     public class Unit : MonoBehaviour
     {
-        [SerializeField] private float m_MovementSpeed;
 
-        private Vector3 targetPosition;
+        private MoveAction _MoveAction;
+        
         private GridPosition gridPosition;
-
-
 
         private void Awake()
         {
-            targetPosition = transform.position;
+            _MoveAction = GetComponent<MoveAction>();
         }
 
         private void Start()
@@ -25,13 +23,6 @@ namespace Script
 
         private void Update()
         {
-            if (Vector3.Distance(transform.position, targetPosition) > 0.1f)
-            {
-                Vector3 moveDirection = (targetPosition - transform.position).normalized;
-                transform.position += moveDirection * (m_MovementSpeed * Time.deltaTime);
-                transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * 15f);
-            }
-
             GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
             if(newGridPosition != gridPosition)
             {
@@ -40,11 +31,15 @@ namespace Script
             }
 
         }
-        
-        
-        public void Move(Vector3 targetPosition)
+
+        public MoveAction GetMoveAction()
         {
-            this.targetPosition = targetPosition;
+            return _MoveAction;
+        }
+
+        public GridPosition GetGridPosition()
+        {
+            return gridPosition;
         }
     }
 }

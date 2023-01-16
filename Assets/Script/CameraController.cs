@@ -99,7 +99,4 @@ public class CameraController : MonoBehaviour
         cinemachineTransposer.m_FollowOffset =
             Vector3.Lerp(cinemachineTransposer.m_FollowOffset, targetFollowOffset, Time.deltaTime * zoomSpeed);
     }
-
-
-
 }

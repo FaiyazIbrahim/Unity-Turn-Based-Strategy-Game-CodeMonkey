@@ -13,7 +13,7 @@ namespace Script
             if (Input.GetMouseButtonDown(0))
             {
                 if(TryHandleUnitSelection()) return;
-                m_Unit.Move(MouseWorld.GetHitPoint());
+                m_Unit.GetMoveAction().Move(MouseWorld.GetHitPoint());
             }
         }
 
