@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace Script
 {
-    public class MoveAction : MonoBehaviour
+    public class MoveAction : BaseAction
     {
 
         [SerializeField] private float m_MovementSpeed;
@@ -11,28 +12,53 @@ namespace Script
 
 
         private Vector3 targetPosition;
-        private Unit _unit;
 
 
-        private void Awake()
+        protected override void Awake()
         {
-            _unit = GetComponent<Unit>();
+            base.Awake();
             targetPosition = transform.position;
         }
 
-        public void Move(Vector3 targetPosition)
-        {
-            this.targetPosition = targetPosition;
-        }
+
 
         private void Update()
         {
+
+            if (!_isActive) return;
+
+            Vector3 moveDirection = (targetPosition - transform.position).normalized;
+
+
             if (Vector3.Distance(transform.position, targetPosition) > 0.1f)
             {
-                Vector3 moveDirection = (targetPosition - transform.position).normalized;
+                
                 transform.position += moveDirection * (m_MovementSpeed * Time.deltaTime);
-                transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * 15f);
+                
             }
+            else
+            {
+                _isActive = false;
+                onActionComplete();
+            }
+
+            transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * 15f);
+        }
+
+
+        public void Move(GridPosition gridPosition, Action onActionComplete)
+        {
+            this.onActionComplete = onActionComplete;
+            this.targetPosition = LevelGrid.Instance.GetWorldposition(gridPosition);
+            _isActive = true;
+        }
+
+
+        public bool IsValidActionGridPosition(GridPosition gridPosition)
+        {
+            List<GridPosition> validGridPositionList =  GetValidActionGridPosition();
+            return validGridPositionList.Contains(gridPosition);
+
         }
 
 
@@ -48,6 +74,25 @@ namespace Script
                 {
                     GridPosition offsetGridPosition = new GridPosition(x, z);
                     GridPosition testGridPOsition = unitGridPosition + offsetGridPosition;
+
+
+                    if(!LevelGrid.Instance.IsValidGridPosition(testGridPOsition))
+                    {
+                        continue;
+                    }
+
+
+                    if(unitGridPosition == testGridPOsition)
+                    {
+                        continue;
+                    }
+
+                    if(LevelGrid.Instance.hasAnyUnitOnGridPosition(testGridPOsition))
+                    {
+                        continue;
+                    }
+
+                    validGridPosition.Add(testGridPOsition);
                 }
             }
 

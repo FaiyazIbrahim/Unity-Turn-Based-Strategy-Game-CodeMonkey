@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,13 +17,15 @@ namespace Script
         private void Awake()
         {
             Instance = this;
+
+            _gridSystem = new GridSystem(10, 10, 3f);
+            _gridSystem.CreateDebugObject(m_debugObject);
         }
 
 
         private void Start()
         {
-            _gridSystem = new GridSystem(10, 10, 3f);
-            _gridSystem.CreateDebugObject(m_debugObject);
+          
 
         }
 
@@ -52,6 +55,19 @@ namespace Script
 
 
         public GridPosition GetGridPosition(Vector3 worldPosition) => _gridSystem.GetGridPosition(worldPosition);
+
+        public Vector3 GetWorldposition(GridPosition gridPosition) => _gridSystem.GetWorldPosition(gridPosition);
+
+        public bool IsValidGridPosition(GridPosition gridPosition) => _gridSystem.IsValidGridPosition(gridPosition);
+
+        public int GetWidth() => _gridSystem.GetWidth();
+        public int GetHeight() => _gridSystem.GetHeight();
+
+        public bool hasAnyUnitOnGridPosition(GridPosition gridPosition)
+        {
+            GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
+            return gridObject.HasAnyUnit();
+        }
 
     }
 

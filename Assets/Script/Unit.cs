@@ -7,11 +7,13 @@ namespace Script
     {
 
         private MoveAction _MoveAction;
+        private SpinAction _spinAction;
         
         private GridPosition gridPosition;
 
         private void Awake()
         {
+            _spinAction = GetComponent<SpinAction>();
             _MoveAction = GetComponent<MoveAction>();
         }
 
@@ -35,6 +37,12 @@ namespace Script
         public MoveAction GetMoveAction()
         {
             return _MoveAction;
+        }
+
+
+        public SpinAction GetSpinAction()
+        {
+            return _spinAction;
         }
 
         public GridPosition GetGridPosition()
