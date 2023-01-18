@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Script
@@ -32,6 +30,11 @@ namespace Script
             this.onActionComplete = onActionComplete;
             _isActive = true;
             _totalSpin = 0f;
+        }
+
+        public override string GetActionName()
+        {
+            return "Spin";
         }
 
     }

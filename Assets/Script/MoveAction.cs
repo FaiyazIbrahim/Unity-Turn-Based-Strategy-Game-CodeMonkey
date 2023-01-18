@@ -99,6 +99,11 @@ namespace Script
             return validGridPosition;
         }
 
+        public override string GetActionName()
+        {
+            return "Move";
+        }
+
     }
 }
 

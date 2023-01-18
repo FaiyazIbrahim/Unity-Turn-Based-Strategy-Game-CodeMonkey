@@ -8,6 +8,7 @@ namespace Script
 
         private MoveAction _MoveAction;
         private SpinAction _spinAction;
+        private BaseAction[] _baseActionArray;
         
         private GridPosition gridPosition;
 
@@ -15,6 +16,7 @@ namespace Script
         {
             _spinAction = GetComponent<SpinAction>();
             _MoveAction = GetComponent<MoveAction>();
+            _baseActionArray = GetComponents<BaseAction>();
         }
 
         private void Start()
@@ -48,6 +50,11 @@ namespace Script
         public GridPosition GetGridPosition()
         {
             return gridPosition;
+        }
+
+        public BaseAction[] GetBaseActionsArray()
+        {
+            return _baseActionArray;
         }
     }
 }

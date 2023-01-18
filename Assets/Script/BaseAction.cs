@@ -1,6 +1,4 @@
-using System.Collections;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -17,6 +15,8 @@ namespace Script
         {
             _unit = GetComponent<Unit>();
         }
+
+        public abstract string GetActionName();
     }
 }
 

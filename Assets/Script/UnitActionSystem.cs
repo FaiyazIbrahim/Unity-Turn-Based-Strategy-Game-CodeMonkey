@@ -1,14 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace Script
 {
     public class UnitActionSystem : MonoBehaviour
     {
+        public event Action onSelectedUnitChanged;
         public static UnitActionSystem Instance;
         [SerializeField] private Unit m_Unit;
         [SerializeField] private LayerMask m_UnitLayer;
+
+
 
 
         private bool _isbusy;
@@ -51,6 +53,7 @@ namespace Script
                 if (hit.transform.TryGetComponent<Unit>(out Unit unit))
                 {
                     m_Unit = unit;
+                    onSelectedUnitChanged?.Invoke();
                     return true;
                 }
             }
