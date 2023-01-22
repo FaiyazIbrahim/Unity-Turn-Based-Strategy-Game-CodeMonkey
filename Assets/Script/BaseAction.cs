@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -17,6 +18,25 @@ namespace Script
         }
 
         public abstract string GetActionName();
+
+        public abstract void TakeAction(GridPosition gridPosition, Action onActionComplete);
+
+
+        public virtual bool IsValidActionGridPosition(GridPosition gridPosition)
+        {
+            List<GridPosition> validGridPositionList = GetValidActionGridPosition();
+
+            return validGridPositionList.Contains(gridPosition);
+
+        }
+
+        public abstract List<GridPosition> GetValidActionGridPosition();
+
+
+        public virtual int GetActionPointCost()
+        {
+            return 1;
+        }
     }
 }
 

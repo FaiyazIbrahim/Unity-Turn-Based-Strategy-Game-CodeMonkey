@@ -55,9 +55,11 @@ namespace Script
 
         public void UpdateGridVisual()
         {
-            Unit unit = UnitActionSystem.Instance.GetSelectedUnit();
             HideAllGridPosition();
-            ShowGridPositionList(unit.GetMoveAction().GetValidActionGridPosition());
+
+            BaseAction baseAction = UnitActionSystem.Instance.GetSelectedAction();
+            
+            ShowGridPositionList(baseAction.GetValidActionGridPosition());
         }
 
     }

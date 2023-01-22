@@ -46,7 +46,7 @@ namespace Script
         }
 
 
-        public void Move(GridPosition gridPosition, Action onActionComplete)
+        public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
         {
             this.onActionComplete = onActionComplete;
             this.targetPosition = LevelGrid.Instance.GetWorldposition(gridPosition);
@@ -54,15 +54,16 @@ namespace Script
         }
 
 
-        public bool IsValidActionGridPosition(GridPosition gridPosition)
-        {
-            List<GridPosition> validGridPositionList =  GetValidActionGridPosition();
-            return validGridPositionList.Contains(gridPosition);
+        //public bool IsValidActionGridPosition(GridPosition gridPosition)
+        //{
+        //    List<GridPosition> validGridPositionList =  GetValidActionGridPosition();
+            
+        //    return validGridPositionList.Contains(gridPosition);
 
-        }
+        //}
 
 
-        public List<GridPosition> GetValidActionGridPosition()
+        public override List<GridPosition> GetValidActionGridPosition()
         {
             List<GridPosition> validGridPosition = new List<GridPosition>();
 
