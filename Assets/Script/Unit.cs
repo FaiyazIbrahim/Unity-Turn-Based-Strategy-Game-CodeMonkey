@@ -10,6 +10,7 @@ namespace Script
 
         private const int ACTION_POINTS_MAX = 2;
 
+        private HealthSystem _healthSystem;
         private MoveAction _MoveAction;
         private SpinAction _spinAction;
         private BaseAction[] _baseActionArray;
@@ -25,6 +26,7 @@ namespace Script
             _spinAction = GetComponent<SpinAction>();
             _MoveAction = GetComponent<MoveAction>();
             _baseActionArray = GetComponents<BaseAction>();
+            _healthSystem = GetComponent<HealthSystem>();
         }
 
         private void Start()
@@ -33,6 +35,7 @@ namespace Script
             LevelGrid.Instance.AddUnitAtGridPosition(gridPosition, this);
 
             TurnSystem.Instance.OnTurnChange += OnTurnChanged;
+            _healthSystem.OnDeath += OnDeath;
         }
 
         private void Update()
@@ -97,6 +100,11 @@ namespace Script
             return ActionPoints;
         }
 
+        public Vector3 GetWorldPosition()
+        {
+            return transform.position;
+        }
+
         private void OnTurnChanged()
         {
             if(IsEnemy() && !TurnSystem.Instance.IsPlayerTurn() ||
@@ -113,5 +121,19 @@ namespace Script
         {
             return m_IsEnemy;
         }
+
+
+        public void Damage(float damageAmount)
+        {
+            _healthSystem.Damage(damageAmount);
+        }
+
+        private void OnDeath()
+        {
+            LevelGrid.Instance.RemoveUnitAtGridPosition(gridPosition, this);
+
+            Destroy(gameObject);
+        }
+
     }
 }
