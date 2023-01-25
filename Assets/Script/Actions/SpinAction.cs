@@ -27,8 +27,10 @@ namespace Script
 
         public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
         {
-            ActionStart(onActionComplete);
+            
             _totalSpin = 0f;
+
+            ActionStart(onActionComplete);
         }
 
         public override string GetActionName()
@@ -48,6 +50,17 @@ namespace Script
 
         }
 
+
+        
+
+        public override EnemyActionAI GetEnemyAIAction(GridPosition gridPosition)
+        {
+            return new EnemyActionAI
+            {
+                gridPosition = gridPosition,
+                actionValue = 0
+            };
+        }
     }
 
 }

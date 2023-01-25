@@ -15,7 +15,7 @@ namespace Script
             if (Input.GetKeyDown(KeyCode.T))
             {
                 m_GridSystemVisual.HideAllGridPosition();
-                m_GridSystemVisual.ShowGridPositionList(m_Unit.GetMoveAction().GetValidActionGridPosition());
+                //m_GridSystemVisual.ShowGridPositionList(m_Unit.GetMoveAction().GetValidActionGridPosition());
             }
         }
     }

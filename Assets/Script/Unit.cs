@@ -13,6 +13,7 @@ namespace Script
         private HealthSystem _healthSystem;
         private MoveAction _MoveAction;
         private SpinAction _spinAction;
+        private ShootAction _shootAction;
         private BaseAction[] _baseActionArray;
         
         private GridPosition gridPosition;
@@ -21,10 +22,16 @@ namespace Script
 
         public static event Action OnAnyActionPointsChanged;
 
+        public static event EventHandler OnAnyUnitSpawned;
+        public static event EventHandler OnAnyUnitDied;
+
+
+
         private void Awake()
         {
             _spinAction = GetComponent<SpinAction>();
             _MoveAction = GetComponent<MoveAction>();
+            _shootAction = GetComponent<ShootAction>();
             _baseActionArray = GetComponents<BaseAction>();
             _healthSystem = GetComponent<HealthSystem>();
         }
@@ -36,6 +43,8 @@ namespace Script
 
             TurnSystem.Instance.OnTurnChange += OnTurnChanged;
             _healthSystem.OnDeath += OnDeath;
+
+            OnAnyUnitSpawned?.Invoke(this, EventArgs.Empty);
         }
 
         private void Update()
@@ -43,8 +52,9 @@ namespace Script
             GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
             if(newGridPosition != gridPosition)
             {
-                LevelGrid.Instance.UnitMovedToGridPosition(this, gridPosition, newGridPosition);
+                GridPosition oldGridPosition = gridPosition;
                 gridPosition = newGridPosition;
+                LevelGrid.Instance.UnitMovedToGridPosition(this, oldGridPosition, newGridPosition);
             }
 
         }
@@ -71,6 +81,11 @@ namespace Script
         public SpinAction GetSpinAction()
         {
             return _spinAction;
+        }
+        
+        public ShootAction GetShootAction()
+        {
+            return _shootAction;
         }
 
         public GridPosition GetGridPosition()
@@ -133,7 +148,13 @@ namespace Script
             LevelGrid.Instance.RemoveUnitAtGridPosition(gridPosition, this);
 
             Destroy(gameObject);
+
+            OnAnyUnitDied?.Invoke(this, EventArgs.Empty);
         }
 
+        public float GetHealthNormalized()
+        {
+            return GetHealthNormalized();
+        }
     }
 }

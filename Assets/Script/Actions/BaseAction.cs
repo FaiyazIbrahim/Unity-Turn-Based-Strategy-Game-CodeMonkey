@@ -7,8 +7,13 @@ namespace Script
 {
     public abstract class BaseAction : MonoBehaviour
     {
+
+        public static event EventHandler OnActionStarted;
+        public static event EventHandler OnActionCompleted;
+
         protected Unit _unit;
         protected bool _isActive;
+
         protected Action onActionComplete;
 
 
@@ -42,13 +47,49 @@ namespace Script
         {
             _isActive = true;
             this.onActionComplete = onActionStart;
+
+            OnActionStarted?.Invoke(this, EventArgs.Empty);
         }
 
         protected void ActionComplete()
         {
             _isActive = false;
             onActionComplete();
+
+            OnActionCompleted?.Invoke(this, EventArgs.Empty);
         }
+
+        public Unit GetUnit()
+        {
+            return _unit;
+        }
+
+        public EnemyActionAI GetEnemyBestActionAI()
+        {
+            List<EnemyActionAI> enemyAiActionList = new List<EnemyActionAI>();
+
+            List<GridPosition> validActionGridPosition = GetValidActionGridPosition();
+
+            foreach(GridPosition gridPosition in validActionGridPosition)
+            {
+                EnemyActionAI enemyAiAction = GetEnemyAIAction(gridPosition);
+                enemyAiActionList.Add(enemyAiAction);
+            }
+
+            if (enemyAiActionList.Count > 0)
+            {
+                enemyAiActionList.Sort((EnemyActionAI a, EnemyActionAI b) => b.actionValue - a.actionValue);
+                return enemyAiActionList[0];
+            }
+            else
+            {
+                return null;
+            }
+       
+        }
+
+
+        public abstract EnemyActionAI GetEnemyAIAction(GridPosition gridPosition);
     }
 }
 

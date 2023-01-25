@@ -50,9 +50,11 @@ namespace Script
 
         public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
         {
-            ActionStart(onActionComplete);
+            
             targetPosition = LevelGrid.Instance.GetWorldposition(gridPosition);
             OnStatMoving?.Invoke();
+
+            ActionStart(onActionComplete);
         }
 
 
@@ -105,6 +107,17 @@ namespace Script
         public override string GetActionName()
         {
             return "Move";
+        }
+
+
+        public override EnemyActionAI GetEnemyAIAction(GridPosition gridPosition)
+        {
+            int targetCountAtGridPosition = _unit.GetShootAction().GetTargetCountAtGridPosition(gridPosition);
+            return new EnemyActionAI
+            {
+                gridPosition = gridPosition,
+                actionValue = targetCountAtGridPosition * 10
+            };
         }
 
     }

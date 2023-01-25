@@ -1,5 +1,4 @@
-
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +6,8 @@ namespace Script
 {
     public class LevelGrid : MonoBehaviour
     {
+        public event Action OnAnyUnitMovedGridPosition;
+
         public static LevelGrid Instance;
 
         [SerializeField] private Transform m_debugObject;
@@ -22,12 +23,6 @@ namespace Script
             _gridSystem.CreateDebugObject(m_debugObject);
         }
 
-
-        private void Start()
-        {
-          
-
-        }
 
         public void AddUnitAtGridPosition(GridPosition gridPosition, Unit unit)
         {
@@ -51,6 +46,8 @@ namespace Script
         {
             RemoveUnitAtGridPosition(fromPosition, unit);
             AddUnitAtGridPosition(toPosition, unit);
+
+            OnAnyUnitMovedGridPosition?.Invoke();
         }
 
 
